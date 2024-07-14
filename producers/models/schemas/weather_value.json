@@ -1,7 +1,7 @@
 {
   "type" : "record",
   "name" : "arrival.key", 
-  "namespace" : "com.udacity.turnstile",
+  "namespace" : "com.udacity.weather",
   "fields" : [
   	{"name" : "temperature",  "type" : "int"},
   	{"name" : "status", "type" : "string"}
