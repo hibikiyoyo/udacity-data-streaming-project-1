@@ -23,16 +23,21 @@ KSQL_URL = "http://localhost:8088"
 
 KSQL_STATEMENT = """
 CREATE TABLE turnstile (
-    ???
+    station_id INT,
+    station_name VARCHAR,
+    line VARCHAR
 ) WITH (
-    ???
+    KAFKA_TOPIC = 'org.chicago.cta.turnstile',
+    VALUE_FORMAT = 'AVRO',
+    KEY='station_id'
 );
 
 CREATE TABLE turnstile_summary
-WITH (???) AS
-    ???
+WITH (VALUE_FORMAT = 'JSON',) AS
+    SELECT station_id , COUNT(station_id) AS count
+    FROM turntile
+    GROUP BY station_id;
 """
-
 
 def execute_statement():
     """Executes the KSQL statement against the KSQL API"""
