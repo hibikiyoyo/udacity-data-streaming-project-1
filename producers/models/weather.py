@@ -81,6 +81,7 @@ class Weather(Producer):
         logger.info("weather kafka proxy integration incomplete - skipping")
         headers = {"Content-Type": "application/vnd.kafka.avro.v2+json"}
         data = {
+            "key_schema": Weather.key_schema,
             "value_schema": Weather.value_schema,
             "records": 
                 [{
