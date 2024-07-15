@@ -27,7 +27,7 @@ class Turnstile(Producer):
             .replace("'", "")
         )
         super().__init__(
-            "turnstile",
+            "org.chicago.cta.turnstile",
             key_schema=Turnstile.key_schema,
             value_schema=Turnstile.value_schema,
             num_partitions=1,

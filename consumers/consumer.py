@@ -30,12 +30,14 @@ class KafkaConsumer:
         self.consume_timeout = consume_timeout
         self.offset_earliest = offset_earliest
 
+        auto_offset_reset = "earliest" if offset_earliest else "latest"
         self.broker_properties = {
                 "bootstrap.servers" : "PLAINTEXT://localhost:9092,PLAINTEXT://localhost:9093,PLAINTEXT://localhost:9094", 
                 "group.id": f"{self.topic_name_pattern}",
                 "default.topic.config": 
                 {
-                    "acks": "all", 
+                    "acks": "all",
+                    "auto.offset.reset": f"{auto_offset_reset}"
                 },
         }
 
