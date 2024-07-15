@@ -9,7 +9,6 @@ import urllib.parse
 import requests
 
 from models.producer import Producer
-from confluent_kafka import avro
 
 logger = logging.getLogger(__name__)
 
@@ -25,11 +24,6 @@ class Weather(Producer):
 
     key_schema = None
     value_schema = None
-
-    key_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/weather_key.json")
-    value_schema = avro.load(
-       f"{Path(__file__).parents[0]}/schemas/weather_value.json"
-    )
 
     winter_months = set((0, 1, 2, 3, 10, 11))
     summer_months = set((6, 7, 8))
@@ -81,8 +75,8 @@ class Weather(Producer):
         logger.info("weather kafka proxy integration incomplete - skipping")
         headers = {"Content-Type": "application/vnd.kafka.avro.v2+json"}
         data = {
-            "key_schema": Weather.key_schema,
-            "value_schema": Weather.value_schema,
+            "key_schema":json.dumps(Weather.key_schema),
+            "value_schema": json.dumps(Weather.value_schema),
             "records": 
                 [{
                     "key"   : {"timestamp": self.time_millis()},
