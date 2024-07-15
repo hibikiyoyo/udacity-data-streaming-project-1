@@ -9,7 +9,7 @@ import urllib.parse
 import requests
 
 from models.producer import Producer
-
+from confluent_kafka import avro
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +26,11 @@ class Weather(Producer):
     key_schema = None
     value_schema = None
 
+    key_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/weather_key.json")
+    value_schema = avro.load(
+       f"{Path(__file__).parents[0]}/schemas/weather_value.json"
+    )
+
     winter_months = set((0, 1, 2, 3, 10, 11))
     summer_months = set((6, 7, 8))
 
@@ -40,6 +45,8 @@ class Weather(Producer):
             "org.chicago.cta.weather.v1", # TODO: Come up with a better topic name
             key_schema=Weather.key_schema,
             value_schema=Weather.value_schema,
+            num_partitions=1,
+            num_replicas=1
         )
 
         self.status = Weather.status.sunny
